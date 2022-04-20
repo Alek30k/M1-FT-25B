@@ -11,11 +11,60 @@
 // search: Busca un valor dentro de la lista. Puede recibir un valor o una función. Si no hubiera resultados, devuelve null.
 
 function LinkedList() {
+    this.head = null;
+}
+LinkedList.prototype.add = function(v) {
+    var newNode = new Node(v);
+    var curr = this.head;
 
+    if (!curr) {
+        this.head = newNode;
+        return
+    }
+
+    while (curr.next) {
+        curr = curr.next;
+    }
+    curr.next = newNode;
 }
 
-function Node(value){
+LinkedList.prototype.remove = function() {
+    var curr = this.head;
+    if (!curr) return null;
+    if (!curr.next) {
+        this.head = null;
+        return curr.value;
+    }
+    while (curr.next.next) {
+        curr = curr.next;
+    }
+    var aux = curr.next;
+    curr.next = null;
+    return aux.value;
+}
 
+LinkedList.prototype.search = function(v) {
+
+    var curr = this.head;
+
+    if (!curr) return null;
+
+    while (curr) {
+
+        if (typeof v === "function") {
+            if (v(curr.value)) {
+                return curr.value;
+            }
+        }
+        if (curr.value === v) return curr.value;
+        curr = curr.next;
+    }
+    return null;
+}
+
+function Node(value) {
+    this.value = value;
+    this.next = null;
 }
 
 // Hash Table( ver información en: https://es.wikipedia.org/wiki/Tabla_hash)
@@ -39,7 +88,7 @@ function HashTable() {
 // --------------------------------
 
 module.exports = {
-  Node,
-  LinkedList,
-  HashTable
+    Node,
+    LinkedList,
+    HashTable
 };
